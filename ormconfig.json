@@ -8,9 +8,6 @@
   "entities": [
     "src/entities/**/*.ts"
   ],
-  "migrations": [
-    "src/migrations/**/*.ts"
-  ],
   "cli": {
     "entitiesDir": "src/entities"
   }
