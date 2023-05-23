@@ -1,25 +1,25 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql'
-import { getRepository } from 'typeorm'
 import { Country } from '../entities/Country'
+import { dataSource } from '../db'
 
 @Resolver()
 export class CountryResolver {
   @Query(() => [Country])
   async getCountries(): Promise<Country[]> {
-    const countryRepository = getRepository(Country)
+    const countryRepository = dataSource.getRepository(Country)
     return await countryRepository.find()
   }
   
   @Query(() => Country, {nullable: true})
   async getCountryByCode(@Arg('code') code: string): Promise<Country | null> {
-    const countryRepository = getRepository(Country)
+    const countryRepository = dataSource.getRepository(Country)
     const country = await countryRepository.findOne({where: {code}})
     return country || null
   }
   
   @Query(() => [Country])
   async getCountriesByContinent(@Arg('continent') continent: string): Promise<Country[]> {
-    const countryRepository = getRepository(Country)
+    const countryRepository = dataSource.getRepository(Country)
     return await countryRepository.find({where: {continent}})
   }
   
@@ -34,7 +34,7 @@ export class CountryResolver {
       throw new Error('Missing required parameters.')
     }
     
-    const countryRepository = getRepository(Country)
+    const countryRepository = dataSource.getRepository(Country)
     
     const existingCountry = await countryRepository.findOne({where: {code}})
     if(existingCountry) {

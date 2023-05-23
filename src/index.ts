@@ -1,14 +1,14 @@
 import 'reflect-metadata'
-import { createConnection } from 'typeorm'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import express from 'express'
 import { CountryResolver } from './resolvers/CountryResolver'
+import { dataSource } from './db'
 
 async function startServer() {
   const app = express()
   
-  await createConnection()
+  await dataSource.initialize()
   
   const schema = await buildSchema({
     resolvers: [CountryResolver],
